@@ -115,7 +115,7 @@ html { overflow: hidden; }
 }
 
 
-#user-box .user_box_element {
+.sidebar .heading {
   padding: 10px 15px 10px 25px;
   background: #434950;
   color: #EEEEEE;
@@ -126,15 +126,15 @@ html { overflow: hidden; }
   text-overflow: ellipsis;
 }
 
-#user-box .user_box_element:first-child{
+.sidebar .heading.user {
   border-left: 5px solid #8A9B0F;
 }
 
-#user-box .user_box_element:last-child{
+.sidebar .heading.server {
   border-left: 5px solid #FA6900;
 }
 
-#user-box .user_box_element .close-button {
+.sidebar .heading .close-button {
   display: block;
   color: white;
   text-shadow: 0 1px 0 black;
@@ -149,11 +149,11 @@ html { overflow: hidden; }
   visibility: hidden;
 }
 
-#user-box .user_box_element:hover .close-button {
+.sidebar .heading:hover .close-button {
   visibility: visible;
 }
 
-#user-box .user_box_element .close-button:hover {
+.sidebar .heading .close-button:hover {
   opacity: 0.8;
 }
 
