@@ -1,6 +1,6 @@
 var OverviewView = Backbone.View.extend({
-  initialize: function() {
-    this.render();
+  initialize: function(event) {
+    this.render(event);
   },
 
   events: {
@@ -15,17 +15,35 @@ var OverviewView = Backbone.View.extend({
   el: '.content',
 
   render: function(event) {
-    $(this.el).html(ich.overview());
-
+    var html = ich.overview(),
+        is_modal = (event !== undefined && event.modal === true);
     // Navigation to different overview panes
     if (event === undefined) {
-      $('#overview').html(ich.overview_home());
+      html.html(ich.overview_home());
     } else {
       var func = ich['overview_' + event.currentTarget.id];
-      $('#overview').html(func({'loggedIn': irc.loggedIn}));
+      html.html(func({'loggedIn': irc.loggedIn}));
     }
-
-    $('.overview_button').bind('click', $.proxy(this.render, this));
+    $('.overview_button', html).bind('click', $.proxy(this.render, this));
+    $('#close', html).bind('click', function() { $('#modal').fadeOut(); });
+    
+    if (is_modal !== true) {
+      $(this.el).html(html);
+    } else {
+      var modal = $('#modal');
+      modal.html(html);
+      for (var bind_event in this.events) {
+        var bind_function = $.proxy(this[this.events[bind_event]], this),
+            bind_split = bind_event.split(' ');
+        if (bind_split.length == 2) {
+          $(bind_split[1], modal).bind(bind_split[0], bind_function);
+        } else {
+          $(modal).bind(bind_split[0], bind_function);
+        }
+      }
+      modal.fadeIn();
+    }
+    
     return this;
   },
 
@@ -97,7 +115,10 @@ var OverviewView = Backbone.View.extend({
   },
 
   more_options: function() {
-    this.$el.find('.connect-more-options').toggleClass('hide');
+    if (typeof this.$el !== 'undefined')
+      this.$el.find('.connect-more-options').toggleClass('hide');
+    else
+      $('#overview .connect-more-options').toggleClass('hide');
   },
 
   login_register: function(event) {

@@ -2,6 +2,14 @@ var ChatApplicationView = Backbone.View.extend({
   className: 'container-fluid',
   originalTitle: document.title,
 
+  events: {
+    'click #new_connection': 'new_connection'
+  },
+
+  new_connection: function() {
+    var view = new OverviewView({ currentTarget: { id: 'connection' }, modal: true });
+  },
+
   initialize: function() {
     irc.chatWindows.bind('change:unread', this.showUnread, this)
       .bind('change:unreadMentions', this.showUnread, this)
@@ -38,8 +46,10 @@ var ChatApplicationView = Backbone.View.extend({
 
   overview: null,
 
-  render: function() {
-    $('body').html($(this.el).html(ich.chat_application()));
+  render: function(event) {
+    var body = $(this.el).html(ich.chat_application());
+    $('body').html(body);
+    $('#new_connection').bind('click', this.connect);
     if (!irc.connected) {
       this.overview = new OverviewView;
     } else {

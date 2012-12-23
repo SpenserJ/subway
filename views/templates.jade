@@ -7,7 +7,11 @@ script(id="chat_application", type="text/html")
       small IRC client
     #user-box
     #channels
+    div.heading#new_connection
+      i(class="icon-plus-sign icon-white spacing-right")
+      | New Connection
   .content
+  #modal
 
 script(id="load_image", type="text/html")
   img(id="loading_image", src="/assets/images/loading.gif")
@@ -32,6 +36,7 @@ script(id="overview", type="text/html")
 
 script(id="overview_connection", type="text/html")
   #home_parent
+    a#close Close
     a.overview_button#home Home
   form.form-inline
     .control-group
