@@ -5,8 +5,7 @@ script(id="chat_application", type="text/html")
     h2 Subway
       br
       small IRC client
-    #user-box
-    #channels
+    #connections
     div.heading#new_connection
       i(class="icon-plus-sign icon-white spacing-right")
       | New Connection
@@ -157,14 +156,17 @@ script(id="channel", type="text/html")
   span(class="unread-mentions", title="Mentions in channel") {{unread_mentions}}
   {{/notStatus}}
 
-script(id="user_box", type="text/html")
-  div.heading.user
+script(id="server_box", type="text/html")
+  <div id={{connection_id}}>
+  .heading.user
     i(class="icon-user icon-white spacing-right")
     {{nick}}
-  div.heading.server
+  .heading.server
     .close-button ×
     i(class="icon-asterisk icon-white spacing-right")
     {{server}}
+  .channels
+  </div>
 
 script(id="userlist_user", type="text/html")
   div(class="userlist_user_activity")

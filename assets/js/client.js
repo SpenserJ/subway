@@ -15,7 +15,8 @@ window.irc = {
   socket: io.connect(null, {port: PORT}),
   chatWindows: new WindowList(),
   connected: false,
-  loggedIn: false
+  loggedIn: false,
+  connection_id: null
 };
 
 window.unity = {
@@ -67,7 +68,7 @@ $(function() {
       irc.appView.render();
       irc.chatWindows.add({name: 'status', type: 'status'});
     } else {
-      irc.appView.renderUserBox();
+      irc.appView.renderServerBox();
     }
 
     // Will reflect modified nick, if chosen nick was taken already
@@ -98,7 +99,7 @@ $(function() {
     irc.me = new User({nick: data.nick, server: data.server});
     irc.connected = true;
     irc.appView.render();
-    irc.appView.renderUserBox();
+    irc.appView.renderServerBox();
     irc.chatWindows.add({name: 'status', type: 'status'});
     $.each(data.channels, function(key, value){
       var chanName = value.serverName.toLowerCase();
@@ -135,6 +136,7 @@ $(function() {
     var status = irc.chatWindows.getByName('status');
     if(status === undefined){
       irc.connected = true;
+      irc.connection_id = data.connection_id;
       irc.appView.render();
       irc.chatWindows.add({name: 'status', type: 'status'});
       status = irc.chatWindows.getByName('status');

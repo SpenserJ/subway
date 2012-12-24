@@ -41,15 +41,17 @@ var ChatApplicationView = Backbone.View.extend({
       if(activeChat && activeChat.set) { activeChat.set('active', true); }
     });
 
-    this.render();
+    this.render(true);
   },
 
   overview: null,
 
-  render: function(event) {
+  render: function(initializing) {
     var body = $(this.el).html(ich.chat_application());
     $('body').html(body);
-    $('#new_connection').bind('click', this.connect);
+    if (initializing === undefined || initializing === false)
+      this.renderServerBox();
+    $('#new_connection').bind('click', this.new_connection);
     if (!irc.connected) {
       this.overview = new OverviewView;
     } else {
@@ -68,13 +70,28 @@ var ChatApplicationView = Backbone.View.extend({
     }).alert());
   },
 
-  renderUserBox: function() {
-    $('#user-box').html(ich.user_box(irc.me.toJSON()));
-
+  renderServerBox: function() {
+    // As we may be rendering the server box before the server is connected,
+    // check our status, and predefine server_box_info if necessary
+    var server_box_info = (irc.me !== undefined) ?
+            irc.me.toJSON() :
+            { nick: 'Connecting', server: irc.hostname },
+        $server_box = $('#' + irc.connection_id);
+    
+    server_box_info.connection_id = irc.connection_id;
+    var rendered = ich.server_box(server_box_info);
+    
     // disconnect server handler
-    $('#user-box .close-button').click(function() {
+    $('#' + irc.connection_id + ' .close-button', rendered).click(function() {
       irc.socket.emit('disconnectServer');
     });
+    
+    if ($server_box.length === 0) {
+      $(rendered).appendTo('#connections');
+    } else {
+      $('.channels', rendered).replaceWith($('.channels', $server_box));
+      $server_box.replaceWith(rendered);
+    }
   },
 
   // Show number of unread mentions in title

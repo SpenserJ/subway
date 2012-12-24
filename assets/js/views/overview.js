@@ -109,7 +109,7 @@ var OverviewView = Backbone.View.extend({
       };
 
       irc.me = new User(connectInfo);
-      irc.me.on('change:nick', irc.appView.renderUserBox);
+      irc.me.on('change:nick', irc.appView.renderServerBox);
       irc.socket.emit('connect', connectInfo);
     }
   },

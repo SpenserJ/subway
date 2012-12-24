@@ -190,22 +190,22 @@ html { overflow: hidden; }
   display: none;
 }
 
-#channels:not(:empty) + #new_connection {
+#connections:not(:empty) + #new_connection {
   display: block;
 }
 
-#channels {
+.channels {
   overflow: auto;
   width: 100%;
 }
 
-#channels > .channel {
+.channels > .channel {
   padding: 5% 5% 5% 20%;
   color: #333333;
   border-bottom: 1px solid #CCCCCC;
 }
 
-#channels > .channel .close-button {
+.channels > .channel .close-button {
   display: block;
   color: #333;
   font: bold 20px Arial;
@@ -220,26 +220,26 @@ html { overflow: hidden; }
   visibility: hidden;
 }
 
-#channels > .channel:hover .close-button {
+.channels > .channel:hover .close-button {
   visibility: visible;
 }
 
-#channels > .channel.active .close-button {
+.channels > .channel.active .close-button {
   color: white;
   text-shadow: 0 1px 0 black;
 }
 
-#channels > .channel .close-button:hover {
+.channels > .channel .close-button:hover {
   opacity: 0.8;
 }
 
-#channels > .channel:not(.active):hover{
+.channels > .channel:not(.active):hover{
   background: #A7DBD8;
   color: #444444;
   cursor: pointer;
 }
 
-#channels > .active{
+.channels > .active{
   background: #315857;
   color: whiteSmoke;
   font-weight: bold;
